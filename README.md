@@ -9,7 +9,7 @@ Các file chính:
  
 Chạy code:
 
-``` python app.py ```
+``` python api.py ```
 
 truy cập vào <http://127.0.0.1:9999/get_weather/hanoi> để xem thông tin nhiệt độ
 
