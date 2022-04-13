@@ -1,7 +1,7 @@
 
 import json
 import pandas as pd
-import requests
+import numpy as np
 import time
 from flask import Flask,jsonify, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
@@ -45,8 +45,14 @@ def get_weather(city):
             "toc_do_gio": list(data.toc_do_gio),
             "vi_do": data.vi_do.unique()[0]
             }
+        
 
-        return json.dumps(kq)
+
+        return json.dumps(kq,default=np_encoder)
+
+def np_encoder(object):
+    if isinstance(object, np.generic):
+        return object.item()
 
 def save_data(data):
     df= pd.read_csv('weather.csv')
