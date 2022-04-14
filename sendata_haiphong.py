@@ -5,16 +5,20 @@ import requests
 import time
 import numpy as np
 import json
+import time
  #Thư viện tạo số ngẫu nhiên
 def send_data():
-    threading.Timer(10,send_data).start() #Tạo luồng
-    city = np.random.choice(['pari','tokyo', 'london','seoul'])
-    data=get_weather(city)
-    data=json.dumps(data)
-    # print(data)
-    r= requests.request("POST","http://127.0.0.1:9999/weather", data=data)
-    
-    print(f'send data {city}')
+    # threading.Timer(10,send_data).start() #Tạo luồng
+    while True:
+        t=time.gmtime()
+        city ='haiphong'
+        if t.tm_hour==0&t.tm_min==0:
+            data=get_weather(city)
+            data=json.dumps(data)
+            # print(data)
+            r= requests.request("POST","http://127.0.0.1:9999/weather", data=data)
+        
+            print(f'send data {city}, {time.time()}')
 
 #     print(r.apparent_encoding)
 # # print(r.content)
@@ -47,7 +51,6 @@ def get_weather(city):
             'huong_gio': r['wind']['deg'],
             'toc_do_gio': r['wind']['speed'],
             'quoc_gia': r['sys']['country']
-
 
         }
     return weather

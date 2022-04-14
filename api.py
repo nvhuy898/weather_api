@@ -56,7 +56,7 @@ def weather():
         return jsonify({" reponse": "nhap ten thanh pho"})
     elif request.method == 'POST':
         try:
-        req_json = json.loads(request.data)
+            req_json = json.loads(request.data)
 
             save_data(req_json)
             print(
