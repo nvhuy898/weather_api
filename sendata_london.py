@@ -12,14 +12,14 @@ def send_data():
     while True:
         t=time.gmtime()
         city ='london'
-        if t.tm_hour==0&t.tm_min==0:
+        if (t.tm_sec==1)&(t.tm_min==1):
             data=get_weather(city)
             data=json.dumps(data)
             # print(data)
             r= requests.request("POST","http://127.0.0.1:9999/weather", data=data)
         
             print(f'send data {city}, {time.time()}')
-
+        time.sleep(1) 
 #     print(r.apparent_encoding)
 # # print(r.content)
 #     print(r.encoding)
