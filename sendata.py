@@ -13,7 +13,7 @@ def send_data():
         t=time.gmtime()
         cities =['danang', 'hanoi', 'haiphong','hue', 'london', 'seoul ', 'tokyo', 'bangkok' ]
         
-        if (t.tm_sec==1):
+        if (t.tm_sec==0)&(t.tm_min==0):
             for city in cities:
                 data=get_weather(city)
                 data=json.dumps(data)
