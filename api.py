@@ -3,6 +3,7 @@ import json
 import pandas as pd
 from flask import Flask, jsonify,  request
 from utils import *
+from unidecode import unidecode
                    
 from flask_sqlalchemy import SQLAlchemy
 
@@ -22,6 +23,8 @@ class City(db.Model):
 @app.route('/get_weather/<city>', methods=['GET', 'POST'])
 def get_weather(city):
 
+    city=unidecode(city).lower().replace(" ","")
+
     df = pd.read_csv('weather.csv')
     df = df.dropna()
     data = df.loc[df.ten == city]
@@ -32,7 +35,7 @@ def get_weather(city):
             data = data[-1:]
             kq = data.to_dict('records')[-1]
         elif request.method == 'POST':
-            data = data[-12:]
+            data = data[-9:]
             kq = {
                 "ID": data.ID.unique()[0],
                 "ap_suat": list(data.ap_suat),
