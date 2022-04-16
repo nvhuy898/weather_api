@@ -7,6 +7,10 @@ Các file chính:
  
  **Hướng dẫn sử dụng:**
  
+Cài thư viện:
+
+```pip instal -r requirements.txt```
+
 Chạy code:
 
 ``` python api.py ```
