@@ -11,6 +11,8 @@ Chạy code:
 
 ``` python api.py ```
 
+``` streamlit run app.py ```
+
 truy cập vào <http://127.0.0.1:9999/get_weather/hanoi> để xem thông tin nhiệt độ
 
 có thể cập nhật dữ liệu bằng phương thức POST tại <http://127.0.0.1:9999/weather> , dữ liệu gửi lên phải có dạng json:
@@ -28,4 +30,6 @@ có thể cập nhật dữ liệu bằng phương thức POST tại <http://127
     "huong_gio": 150,
     "toc_do_gio": 3.75
     }
+
+
 
