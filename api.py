@@ -35,7 +35,7 @@ def get_weather(city):
             data = data[-1:]
             kq = data.to_dict('records')[-1]
         elif request.method == 'POST':
-            data = data[-9:]
+            data = data[-12:]
             kq = {
                 "ID": data.ID.unique()[0],
                 "ap_suat": list(data.ap_suat),

@@ -16,6 +16,19 @@ def send_data():
         if (t.tm_sec==0)&(t.tm_min==0):
             for city in cities:
                 data=get_weather(city)
+                data= {
+                    "ID": 1581130.0,
+                    "ten": "iot",
+                    "quoc_gia": "VN",
+                    "kinh_do": 105.8412,
+                    "vi_do": 21.0245,
+                    "thoi_gian": "Fri Apr 15 18:01:01 2022",
+                    "nhiet_do": 27.0,
+                    "do_am": 79.0, 
+                    "ap_suat": 1006.0,
+                    "huong_gio": 136.0,
+                    "toc_do_gio": "5.67"
+                }
                 data=json.dumps(data)
                 # print(data)
                 r= requests.request("POST","http://127.0.0.1:9999/weather", data=data)
