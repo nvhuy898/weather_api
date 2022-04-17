@@ -9,6 +9,8 @@ def np_encoder(object):
 def save_data(data):
     df = pd.read_csv('weather.csv')
     df = df.dropna()
-    df = df.append(pd.DataFrame(pd.Series(data)).T, ignore_index=True)
-    df = df.dropna()
-    df.to_csv('weather.csv', index=None)
+    if len(df.columns)==len(pd.DataFrame(pd.Series(data)).T.columns):
+        df = df.append(pd.DataFrame(pd.Series(data)).T, ignore_index=True)
+
+        df = df.dropna()
+        df.to_csv('weather.csv', index=None)

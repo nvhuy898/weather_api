@@ -56,7 +56,7 @@ def get_weather(city):
 @app.route('/weather', methods=['GET', 'POST'])
 def weather():
     if request.method == 'GET':
-        return jsonify({" reponse": "nhap ten thanh pho"})
+        return "hãy gửi dữ liệu thời tiết"
     elif request.method == 'POST':
         try:
             req_json = json.loads(request.data)
