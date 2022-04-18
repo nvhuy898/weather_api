@@ -13,7 +13,7 @@ def send_data():
         t=time.gmtime()
         cities =['danang', 'hanoi', 'haiphong','hue', 'london', 'seoul ', 'tokyo', 'bangkok' ]
         
-        if (t.tm_sec==0)&(t.tm_min==0):
+        if (t.tm_sec==0):
             for city in cities:
                 data=get_weather(city)
                 data= {
@@ -31,7 +31,7 @@ def send_data():
                 }
                 data=json.dumps(data)
                 # print(data)
-                r= requests.request("POST","http://127.0.0.1:9999/weather", data=data)
+                r= requests.request("POST","http://192.168.51.102:9999/weather", data=data)
             
                 print(f'Gửi dữ liệu tại {city}, {time.ctime(time.time())}')
         time.sleep(5) 

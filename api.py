@@ -71,4 +71,5 @@ def weather():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=9999)
+    ipv4='192.168.51.102' #dia chi ipv4
+    app.run(debug=True, host= ipv4, port=9999)
