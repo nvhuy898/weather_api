@@ -6,10 +6,13 @@ Các file chính:
 - weather.csv: file lưu trữ dữ liệu thời tiết
  
  **Hướng dẫn sử dụng:**
+
  
 Cài thư viện:
 
 ```pip instal -r requirements.txt```
+
+tải file weight tại [weight](https://drive.google.com/file/d/17kofUi2lz1OGPxDT53KKCFV37CpWUDwP/view?usp=sharing)
 
 Chạy code:
 
