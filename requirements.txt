@@ -1,5 +1,8 @@
 pandas
 streamlit
 flask
-Flask-SQLAlchemy
+pyyaml
 unidecode
+matplotlib
+scikit-learn
+tensorflow==2.8.0

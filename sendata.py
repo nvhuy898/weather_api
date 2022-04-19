@@ -6,35 +6,39 @@ import time
 import numpy as np
 import json
 import time
- #Thư viện tạo số ngẫu nhiên
+from utils import *
+
+config= get_config('config.yml')
+ip_host=config['ip_host']
+
 def send_data():
-    # threading.Timer(10,send_data).start() #Tạo luồng
+
     while True:
         t=time.gmtime()
         cities =['danang', 'hanoi', 'haiphong','hue', 'london', 'seoul ', 'tokyo', 'bangkok' ]
-        
+        print(t.tm_sec)
         if (t.tm_sec==0):
             for city in cities:
                 data=get_weather(city)
-                data= {
-                    "ID": 1581130.0,
-                    "ten": "iot",
-                    "quoc_gia": "VN",
-                    "kinh_do": 105.8412,
-                    "vi_do": 21.0245,
-                    "thoi_gian": "Fri Apr 15 18:01:01 2022",
-                    "nhiet_do": 27.0,
-                    "do_am": 79.0, 
-                    "ap_suat": 1006.0,
-                    "huong_gio": 136.0,
-                    "toc_do_gio": "5.67"
-                }
+                # data= {
+                #     "ID": 1581130.0,
+                #     "ten": "iot",
+                #     "quoc_gia": "VN",
+                #     "kinh_do": 105.8412,
+                #     "vi_do": 21.0245,
+                #     "thoi_gian": "Fri Apr 15 18:01:01 2022",
+                #     "nhiet_do": 27.0,
+                #     "do_am": 79.0, 
+                #     "ap_suat": 1006.0,
+                #     "huong_gio": 136.0,
+                #     "toc_do_gio": "5.67"
+                # }
                 data=json.dumps(data)
-                # print(data)
-                r= requests.request("POST","http://192.168.51.102:9999/weather", data=data)
+                print(data)
+                r= requests.request("POST",f"http://{ip_host}:9999/weather", data=data)
             
                 print(f'Gửi dữ liệu tại {city}, {time.ctime(time.time())}')
-        time.sleep(5) 
+        time.sleep(1) 
 
 
 def get_weather(city):
