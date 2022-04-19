@@ -1,7 +1,7 @@
 
 import json
 import pandas as pd
-from flask import Flask, jsonify,  request
+from flask import Flask,  request
 from utils import *
 from unidecode import unidecode
                    
@@ -14,6 +14,8 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'thisisasecret'
 db = SQLAlchemy(app)
 
+config= get_config('config.yml')
+ip_host=config['ip_host']
 
 class City(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -71,5 +73,7 @@ def weather():
 
 
 if __name__ == '__main__':
-    ipv4='192.168.51.102' #dia chi ipv4
-    app.run(debug=True, host= ipv4, port=9999)
+    # ipv4='192.168.51.102' #dia chi ipv4
+    app.run(debug=True, host= ip_host, port=9999)
+    # app.run(debug=True, port=9999)
+    

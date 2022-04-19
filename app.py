@@ -1,3 +1,4 @@
+#
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -8,7 +9,11 @@ import json
 import requests
 from ai import AI
 import time 
+from utils import *
 
+
+config= get_config('config.yml')
+ip_host=config['ip_host']
 ai=AI()
 
 
@@ -23,10 +28,9 @@ st.map(df)
 
 # @st.cache
 def load_data(city):
-    
     print(city)
-    r= requests.request("POST",f"http://192.168.51.102:9999/get_weather/{city}" )
-    print(f"http://127.0.0.1:9999/get_weather/{city}")
+    r= requests.request("POST",f"http://{ip_host}/get_weather/{city}" )
+    print(f"http://{ip_host}/get_weather/{city}")
     df=json.loads(r.content)
     
     return df
