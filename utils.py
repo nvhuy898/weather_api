@@ -7,6 +7,14 @@ def np_encoder(object):
 
 
 def save_data(data):
+    if data['ten']=='iot':
+        thoi_gian=data['thoi_gian']
+        # t=np.array(thoi_gian.replace("[","").replace("]","").split(", ")).astype(int)
+        t=thoi_gian
+        from datetime import datetime
+        d = datetime(t[0],t[1],t[2],t[3],t[4],t[5],)+ pd.Timedelta(hours=7)
+        data['thoi_gian']=d.strftime("%a %b %d %H:%M:%S %Y")
+    
     df = pd.read_csv('weather.csv')
     df = df.dropna()
     if len(df.columns)==len(pd.DataFrame(pd.Series(data)).T.columns):
@@ -14,6 +22,9 @@ def save_data(data):
 
         df = df.dropna()
         df.to_csv('weather.csv', index=None)
+        return True
+    else:
+        return False
 
 
 

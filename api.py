@@ -62,12 +62,18 @@ def weather():
     elif request.method == 'POST':
         try:
             req_json = json.loads(request.data)
+            print(req_json)
 
-            save_data(req_json)
-            print(
-                f"gui thanh cong du lieu tai {req_json['ten']}, {req_json['thoi_gian']}")
+            kq=save_data(req_json)
+            
+            if kq:
+                print(
+                    f"gui thanh cong du lieu tai {req_json['ten']}, {req_json['thoi_gian']}")
 
-            return f"gui thanh cong du lieu tai {req_json['ten']}, {req_json['thoi_gian']}"
+                return f"gui thanh cong du lieu tai {req_json['ten']}, {req_json['thoi_gian']}"
+            else:
+                return f"gui du lieu khong thanh cong, du lieu khong day du hoac sai"
+
         except :
             return f"gui du lieu khong thanh cong"
 
