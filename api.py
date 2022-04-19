@@ -6,6 +6,7 @@ from utils import *
 from unidecode import unidecode
                    
 from flask_sqlalchemy import SQLAlchemy
+from ai import AI
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
@@ -13,6 +14,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///weather.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'thisisasecret'
 db = SQLAlchemy(app)
+ai=AI()
 
 config= get_config('config.yml')
 ip_host=config['ip_host']
@@ -30,14 +32,23 @@ def get_weather(city):
     df = pd.read_csv('weather.csv')
     df = df.dropna()
     data = df.loc[df.ten == city]
+
+    X=data[-1:]
+    X=X[['nhiet_do','do_am','toc_do_gio','huong_gio','ap_suat']].astype(float)
+    X=X
+    print(X,type(X))
+    thoi_tiet_du_doan=ai.du_doan_thoi_tiet(X)
+    print(thoi_tiet_du_doan)
     if len(data) == 0:
         return f"Không có dữ liệu thành phố {city}, Vui lòng kiểm tra lại !!!"
     else:
         if request.method == 'GET':
             data = data[-1:]
             kq = data.to_dict('records')[-1]
+            
         elif request.method == 'POST':
             data = data[-12:]
+            nhiet_do_du_doan=ai.du_doan_nhiet_do(data)
             kq = {
                 "ID": data.ID.unique()[0],
                 "ap_suat": list(data.ap_suat),
@@ -49,9 +60,10 @@ def get_weather(city):
                 "ten": data.ten.unique()[0],
                 "thoi_gian": list(data.thoi_gian),
                 "toc_do_gio": list(data.toc_do_gio),
-                "vi_do": data.vi_do.unique()[0]
+                "vi_do": data.vi_do.unique()[0],
+                "nhiet_do_du_doan": list(nhiet_do_du_doan)
             }
-
+        kq['thoi_tiet_du_doan']=thoi_tiet_du_doan
         return json.dumps(kq, default=np_encoder)
 
 

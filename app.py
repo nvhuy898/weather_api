@@ -7,14 +7,13 @@ from matplotlib import rcParams
 from matplotlib import dates
 import json
 import requests
-from ai import AI
 import time 
 from utils import *
 
 
 config= get_config('config.yml')
 ip_host=config['ip_host']
-ai=AI()
+
 
 
 st.set_option('deprecation.showPyplotGlobalUse', False)
@@ -28,9 +27,9 @@ st.map(df)
 
 # @st.cache
 def load_data(city):
-    print(city)
-    r= requests.request("POST",f"http://{ip_host}/get_weather/{city}" )
-    print(f"http://{ip_host}/get_weather/{city}")
+    print(ip_host)
+    r= requests.request("POST",f"http://{ip_host}:9999/get_weather/{city}" )
+    print(f"http://{ip_host}:9999/get_weather/{city}")
     df=json.loads(r.content)
     
     return df
@@ -47,6 +46,8 @@ st.set_option('deprecation.showPyplotGlobalUse', False)
 
 def weather_detail(place="hanoi"):
     data = load_data(place)
+    t_du_doan=data['nhiet_do_du_doan']
+    del data['nhiet_do_du_doan']
     data=pd.DataFrame(data)
     data= data.astype({'nhiet_do': 'int8', 'do_am':'int8'})
     
@@ -71,8 +72,9 @@ def weather_detail(place="hanoi"):
     st.write(f"### 📍 Áp suất: {(data.ap_suat[n])} mBar 📍")
     st.write(f"### 💨 Hướng gió: {int(data.huong_gio[n])}💨")
     st.write(f"### 💨 Vận tốc gió: {(data.toc_do_gio[n])} km/h💨")
+    st.write(f"### ⛅Thời tiết dự đoán: {(data.thoi_tiet_du_doan[n])}⛅")
 
-    t_du_doan=ai.du_doan_nhiet_do(data)
+    
     if g_type == "Biểu đồ đường":
             plot_T(data, t_du_doan)
     elif g_type == "Biểu đồ cột":
@@ -142,7 +144,7 @@ def plot_T(data,t_du_doan):
 
 def plot_bars(data,t_du_doan):
     # print(days)
-    print(t_du_doan)
+    
     plt.bar(data.thoi_gian, data.nhiet_do, color='red',width = 0.035, edgecolor= 'black')
     annotate(data.thoi_gian, data.nhiet_do)
     plt.bar(data.thoi_gian[:6] +pd.Timedelta(hours=12), t_du_doan, color='blue',width = 0.035, edgecolor= 'black')
@@ -184,12 +186,12 @@ def plot_bars(data,t_du_doan):
 
 if b:
     if place != "":
-        try:
+        # try:
             
             weather_detail(place)
 
-        except :
-            st.write("Vui lòng điền chính xác địa chỉ thành phố !!!")
+        # except :
+        #     st.write("Vui lòng điền chính xác địa chỉ thành phố !!!")
 
 
 
