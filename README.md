@@ -1,8 +1,13 @@
 # weather_api
 API thời tiết sử dụng flask
+
+Demo sảm phẩm tại [Demo](https://drive.google.com/drive/folders/1NqAaXT-LtqM84XugpzbYBwhu4DUxHKLy?usp=sharing)
+
 Các file chính:
-- api.py: file api server
-- sendata.py: gửi dữ liệu lên api
+- api.py: file server api
+- app.py : file giao diện web
+- esp.py : file đọc dữ liệu từ esp và gửi dữ liệu lên server
+- sendata.py: demo gửi dữ liệu lên server
 - weather.csv: file lưu trữ dữ liệu thời tiết
  
  **Hướng dẫn sử dụng:**
@@ -10,9 +15,9 @@ Các file chính:
  
 Cài thư viện:
 
-```pip instal -r requirements.txt```
+```pip install -r requirements.txt```
 
-tải file weight tại [weight](https://drive.google.com/file/d/17kofUi2lz1OGPxDT53KKCFV37CpWUDwP/view?usp=sharing)
+tải file weight tại [weight](https://drive.google.com/file/d/17kofUi2lz1OGPxDT53KKCFV37CpWUDwP/view?usp=sharing) lưu vào thư mục weights
 
 Chạy code:
 
