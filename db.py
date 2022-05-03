@@ -29,6 +29,6 @@ def delete_data(con, ten, thoi_gian):
     delete_query = "DELETE FROM WEATHER WHERE ten = '"+ df_ten + "' AND thoi_gian='"+ df_thoi_gian +"'"
     cursorObj.execute(delete_query)
     con.commit()
-# df= pd.read_csv('weather.csv')   
+df= pd.read_csv('weather.csv')   
 # for row in df.values:
 #     insert_data(con, tuple(row))
