@@ -4,24 +4,40 @@ import pandas as pd
 from flask import Flask,  request
 from utils import *
 from unidecode import unidecode
-                   
-from flask_sqlalchemy import SQLAlchemy
+from db import DB
 from ai import AI
 
 app = Flask(__name__)
-app.config['DEBUG'] = True
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///weather.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SECRET_KEY'] = 'thisisasecret'
-db = SQLAlchemy(app)
 ai=AI()
+db=DB(name_db='weather.db')
 
 config= get_config('config.yml')
 ip_host=config['ip_host']
 
-class City(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), nullable=False)
+
+
+def save_data(data):
+    if data['ten']=='iot':
+        thoi_gian=data['thoi_gian']
+        # t=np.array(thoi_gian.replace("[","").replace("]","").split(", ")).astype(int)
+        t=thoi_gian
+        from datetime import datetime
+        d = datetime(t[0],t[1],t[2],t[3],t[4],t[5],)+ pd.Timedelta(hours=7)
+        data['thoi_gian']=d.strftime("%a %b %d %H:%M:%S %Y")
+    
+    # df = pd.read_csv('weather.csv')
+    # df = df.dropna()
+    print('++++++++++++',list(data.values()))
+    if db.column_list==list(data.keys()):
+        
+        # df = df.append(pd.DataFrame(pd.Series(data)).T, ignore_index=True)
+
+        # df = df.dropna()
+        # df.to_csv('weather.csv', index=None)
+        return db.insert_data(list(data.values()))
+    else:
+        return False
+
 
 
 @app.route('/get_weather/<city>', methods=['GET', 'POST'])
@@ -29,10 +45,10 @@ def get_weather(city):
 
     city=unidecode(city).lower().replace(" ","")
 
-    df = pd.read_csv('weather.csv')
-    df = df.dropna()
-    data = df.loc[df.ten == city]
-
+    # df = pd.read_csv('weather.csv')
+    # df = df.dropna()
+    # data = df.loc[df.ten == city]
+    data=db.get_data(df_ten=city)
     X=data[-1:]
     X=X[['nhiet_do','do_am','toc_do_gio','huong_gio','ap_suat']].astype(float)
     X=X
@@ -45,7 +61,7 @@ def get_weather(city):
         if request.method == 'GET':
             data = data[-1:]
             kq = data.to_dict('records')[-1]
-            
+
         elif request.method == 'POST':
             data = data[-12:]
             nhiet_do_du_doan=ai.du_doan_nhiet_do(data)
@@ -67,10 +83,34 @@ def get_weather(city):
         return json.dumps(kq, default=np_encoder)
 
 
-@app.route('/weather', methods=['GET', 'POST'])
+@app.route('/weather', methods=['GET', 'POST', 'DELETE'])
 def weather():
     if request.method == 'GET':
         return "hãy gửi dữ liệu thời tiết"
+
+    elif request.method == 'DELETE':
+        # try:
+            req_json = json.loads(request.data)
+            print(req_json)
+            ten=req_json['ten']
+            thoi_gian=req_json['thoi_gian']
+
+            kq=db.delete_data(ten,thoi_gian)
+            
+            if kq:
+                print(
+                    f"xoa thanh cong du lieu tai {req_json['ten']}, {req_json['thoi_gian']}")
+
+                return f"xoa thanh cong du lieu tai {req_json['ten']}, {req_json['thoi_gian']}"
+            else:
+                return f"xoa du lieu khong thanh cong, kiem tra lai ten va thoi gian"
+
+        # except :
+        #     return f"xoa du lieu khong thanh cong"
+
+
+
+            
     elif request.method == 'POST':
         try:
             req_json = json.loads(request.data)
