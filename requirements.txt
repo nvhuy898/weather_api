@@ -1,6 +1,7 @@
 pandas
 streamlit
 flask
+Flask-SQLAlchemy
 pyyaml
 unidecode
 matplotlib
